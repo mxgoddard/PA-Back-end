@@ -7,8 +7,6 @@ exports.landing = (req, res) => {
 }
 
 exports.getEvents = (req, res) => {
-  // let userEvents = {};
-
   function eventsSet(events) {
     res.send(events);
   }
