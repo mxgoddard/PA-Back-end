@@ -7,6 +7,7 @@
     "body-parser": "^1.18.3",
     "express": "^4.16.4",
     "husky": "^1.2.0",
+    "nodemon": "^1.18.6",
     "supertest": "^3.3.0"
   },
   "devDependencies": {
@@ -15,7 +16,8 @@
     "eslint-plugin-import": "^2.14.0"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "nodemon": "nodemon index.js"
   },
   "repository": {
     "type": "git",
