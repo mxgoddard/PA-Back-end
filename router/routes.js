@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { getEvents, landing } = require('../controllers/controller');
+const { getEvents, landing, travel } = require('../controllers/controller');
 
 router
   .route('/events')
@@ -8,5 +8,9 @@ router
 router
   .route('/')
   .get(landing);
+
+router
+  .route('/travel')
+  .get(travel);
 
 module.exports = router;
