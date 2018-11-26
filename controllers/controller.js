@@ -2,6 +2,10 @@ const fs = require('fs');
 const readline = require('readline');
 const { google } = require('googleapis');
 
+exports.landing = (req, res) => {
+  res.send('CONNECTED')
+}
+
 exports.getEvents = (req, res) => {
   // let userEvents = {};
 
