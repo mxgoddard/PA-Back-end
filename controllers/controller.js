@@ -3,9 +3,13 @@ const readline = require('readline');
 const { google } = require('googleapis');
 
 exports.getEvents = (req, res) => {
+  // let userEvents = {};
 
-  let userEvents = {};
-  console.log(userEvents)
+  function eventsSet(events) {
+    res.send(events);
+  }
+
+  // console.log(userEvents)
   console.log('Hello?');
   // If modifying these scopes, delete token.json.
   const SCOPES = ['https://www.googleapis.com/auth/calendar.readonly'];
@@ -86,12 +90,12 @@ exports.getEvents = (req, res) => {
       singleEvents: true,
       orderBy: 'startTime',
     }, (err, res) => {
-      if (err) return console.log('The API returned an error: ' + err);
+      if (err) return console.log(`The API returned an error: ${err}`);
       const events = res.data.items;
       if (events.length) {
-        userEvents = events;
         // console.log(userEvents)
-        // console.log(`Upcoming ${events.length} events:`);
+        // userEvents = events;
+        eventsSet(events);
       } else {
         console.log('No upcoming events found.');
       }
