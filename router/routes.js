@@ -2,11 +2,10 @@ const router = require('express').Router();
 const { getEvents, landing } = require('../controllers/controller');
 
 router
-
   .route('/events')
-  .get(getEvents)
+  .get(getEvents);
 
-  router
+router
   .route('/')
   .get(landing);
 
