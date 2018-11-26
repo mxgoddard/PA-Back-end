@@ -1,7 +1,7 @@
 const router = require('express').Router();
-const { controller } = require('../controllers/controller');
+const { getEvents } = require('../controllers/controller');
 
-router.route('')
-  .get(controller);
+router.route('/events')
+  .get(getEvents);
 
 module.exports = router;

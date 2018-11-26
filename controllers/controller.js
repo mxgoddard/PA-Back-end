@@ -1,5 +1,6 @@
+const { listEvents } = require('../utils/index');
 
-exports.controller = (req, res) => {
-  console.log('We are in...CONNECTED');
+exports.getEvents = (req, res) => {
+  console.log(listEvents());
   res.send('CONNECTED');
 };
