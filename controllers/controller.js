@@ -14,21 +14,16 @@ exports.travel = async (req, res) => {
     res.send(data);
   });
 };
-// ///////////////////////////////////////////////////////////////////////////////////////////
 
 exports.landing = (req, res) => {
   res.send('CONNECTED');
 };
-
-// ///////////////////////////////////////////////////////////////////////////////////////////
 
 exports.getEvents = (req, res) => {
   function eventsSet(events) {
     res.send(events);
   }
 
-  // console.log(userEvents)
-  console.log('Hello?');
   // If modifying these scopes, delete token.json.
   const SCOPES = ['https://www.googleapis.com/auth/calendar.readonly'];
   // The file token.json stores the user's access and refresh tokens, and is

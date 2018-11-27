@@ -5,5 +5,4 @@ const router = require('./router/routes');
 app.use(bodyParser.json());
 app.use('/', router);
 
-
 module.exports = app;
