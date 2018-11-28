@@ -17,20 +17,20 @@ exports.entryPoint = (req, res) => {
 
       tbl_trip
     |---------
-    | user_id | trip_id | journey_id | summary | meeting_location | meeting_time
-    |---------
-
-      tbl_journey
-    |---------
-    | journey_id | depart_location | depart_time | arrive_location | arrive_time | duration | company
+    | trip_id | user_id |  | summary | meeting_location | meeting_time | depart_location | depart_time | arrive_location | arrive_time | duration | company
     |---------
 
       tbl_user
     |---------
     | user_id | first_name | last_name | email | login_token
     |---------
+
+      tbl_userTrip
+    |---------
+    | id | trip_id | user_id
+    |---------
   */
-      
+    
   const { id } = req.query;
 
   // Query database for information off the id.

@@ -106,8 +106,6 @@ exports.getEvents = (req, res) => {
       if (err) return console.log(`The API returned an error: ${err}`);
       const events = res.data.items;
       if (events.length) {
-        // console.log(userEvents)
-        // userEvents = events;
         eventsSet(events);
       } else {
         console.log('No upcoming events found.');
