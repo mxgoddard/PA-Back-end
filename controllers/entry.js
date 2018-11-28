@@ -16,7 +16,7 @@ exports.entryPoint = (req, res) => {
     first_name: 'gino',
     last_name: 'Dacampo',
   };
-  const setDoc = db.collection('tbl_user').doc('hello').set(newData);
+  const setDoc = db.collection('tbl_user').doc('124').set(newData);
 
 
   const { id } = req.query;

@@ -3,20 +3,9 @@ const readline = require('readline');
 const { google } = require('googleapis');
 const axios = require('axios');
 
-const getTravelData = async () => {
-  const BASE_URL = 'https://transportapi.com/v3/uk/train/station/MAN/live.json?limit=10?limit=5&app_id=3bc83bc3&app_key=fd49246069f6445cc21bd4ceb1d0351b';
-  const { data } = await axios.get(BASE_URL);
-  return data;
-};
-
-exports.travel = async (req, res) => {
-  getTravelData().then((data) => {
-    res.send(data);
-  });
-};
-
 exports.landing = (req, res) => {
-  res.send('CONNECTED');
+  const landingObj = { msg: 'CONNECTED', routes: ['/', '/events', '/direction', '/entry'] };
+  res.send(landingObj);
 };
 
 exports.getEvents = (req, res) => {
