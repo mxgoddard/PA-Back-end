@@ -11,11 +11,12 @@ const { GOOGLE_KEY } = process.env.GOOGLE_KEY || require('../config/index.js');
 const getDirections = async (event_id) => {
   // Take data from database depending on id
   // const app = firebase.app();
-  const db = firebase.firestore();
+  const db = admin.firestore();
   const settings = { timestampsInSnapshots: true };
   db.settings(settings);
 
-  const { location } = db.collection('tbl_trip').doc(event_id);
+  const location = db.collection('tbl_trip').doc(event_id);
+  console.log(location);
 
   const BASE_URL = `https://maps.googleapis.com/maps/api/directions/json?origin=Manchester,UK&destination=${location},UK&mode=transit&key=${GOOGLE_KEY}`;
 
@@ -29,14 +30,14 @@ const getDirections = async (event_id) => {
 };
 
 // This is triggered when the user clicks on an event
-exports.entryPoint = (req, res) => {
+exports.entryPoint = async (req, res) => {
 
   // Has to take parameter of event_id
   const { event_id } = req.params;
   console.log(event_id);
 
   // Get data using id from database
-  const data = getDirections(event_id);
+  const data = await getDirections(event_id);
   console.log(data);
 
   const db = admin.firestore();
