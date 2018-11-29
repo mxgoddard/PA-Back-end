@@ -1,5 +1,5 @@
 const axios = require('axios');
-const { GOOGLE_KEY } = process.env.NODE_ENV === 'production' ? process.env.GOOGLE_KEY : require('../config/index.js');
+const { GOOGLE_KEY } = process.env.NODE_ENV === 'production' ? process.env : require('../config/index.js');
 // const { GOOGLE_KEY } = process.env.GOOGLE_KEY || require('../config/index.js');
 
 const getDirections = async () => {
