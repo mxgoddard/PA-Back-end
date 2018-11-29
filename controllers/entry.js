@@ -22,8 +22,8 @@ exports.entryPoint = (req, res) => {
     distance: '',
     train_company: '',
   };
-  const setDoc = db.collection('tbl_trip').doc('hardcoded_trip_id').set(newData);
 
+  const setDoc = db.collection('tbl_trip').doc('hardcoded_trip_id').set(newData);
 
   // const { id } = req.query;
   res.send('Entry Point');

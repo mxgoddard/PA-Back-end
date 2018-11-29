@@ -27,6 +27,6 @@ exports.direction = async (req, res) => {
     refined.distance = distance.text;
     refined.train_company = line.agencies[0].name;
 
-    res.send(data);
+    res.send(refined);
   });
 };
