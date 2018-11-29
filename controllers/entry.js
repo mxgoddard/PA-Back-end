@@ -39,11 +39,7 @@ const getDirections = async (event_id) => {
 exports.entryPoint = async (req, res) => {
 
   const { event_id } = req.params;
-
-  const data1 = await getDirections(event_id)
-
   const db = admin.firestore();
-
   const newData = {
     start_address: '',
     departure_stop: '',
@@ -55,5 +51,10 @@ exports.entryPoint = async (req, res) => {
     distance: '',
     train_company: '',
   };
+  const data1 = await getDirections(event_id)
+  console.log(data1)
+  return data1
+
+
   // const setDoc = db.collection('tbl_event').doc(event_id).set(newData);
 };
