@@ -4,7 +4,7 @@ const { GOOGLE_KEY } = process.env.GOOGLE_KEY || require('../config/index.js');
 const getDirections = async () => {
   const BASE_URL = `https://maps.googleapis.com/maps/api/directions/json?origin=Manchester,UK&destination=London,UK&mode=transit&key=${GOOGLE_KEY}`;
   const { data } = await axios.get(BASE_URL);
-  return data;
+  return data; 
 };
 
 exports.direction = async (req, res) => {
