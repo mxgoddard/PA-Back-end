@@ -37,6 +37,21 @@ exports.entryPoint = async (req, res) => {
         refined.train_company = line.agencies[0].name;
 
         const setDoc = db.collection('tbl_trip').doc(event_id).set(refined);
+        // ///////////////////////////////////////////////////////////////////////////////////////
+
+        const events = db.collection('tbl_events');
+        const allEvents = events.orderBy('meeting_start', 'asc').get()
+          .then((snapshot) => {
+            snapshot.forEach((doc) => {
+              console.log(doc.id, '=>', doc.data());
+            });
+          })
+          .catch((err) => {
+            console.log('Error getting documents', err);
+          });
+
+
+        // ///////////////////////////////////////////////////////////////////////////////////////
         res.send(refined)
       } catch (err) {
         console.log(err);
