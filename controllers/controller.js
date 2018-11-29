@@ -21,15 +21,6 @@ exports.getEvents = (req, res) => {
 
     events.map((event) => {
       const newData = {
-        // start_address: '',
-        // departure_stop: '',
-        // departure_time: '',
-        // end_address: '',
-        // arrival_stop: '',
-        // arrival_time: '',
-        // duration: '',
-        // distance: '',
-        // train_company: '',
         summary: event.summary,
         location: event.location,
         meeting_start: event.start.dateTime,
