@@ -1,6 +1,13 @@
 const fs = require('fs');
 const readline = require('readline');
 const { google } = require('googleapis');
+const admin = require('firebase-admin');
+const serviceAccount = require('../config/firebaseServiceAcc.json');
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: 'https://projectpa-223310.firebaseio.com',
+});
 
 exports.landing = (req, res) => {
   const landingObj = { msg: 'CONNECTED', routes: ['/', '/events', '/direction', '/entry'] };
@@ -9,6 +16,28 @@ exports.landing = (req, res) => {
 
 exports.getEvents = (req, res) => {
   function eventsSet(events) {
+
+    const db = admin.firestore();
+
+    events.map((event) => {
+      const newData = {
+        // start_address: '',
+        // departure_stop: '',
+        // departure_time: '',
+        // end_address: '',
+        // arrival_stop: '',
+        // arrival_time: '',
+        // duration: '',
+        // distance: '',
+        // train_company: '',
+        summary: event.summary,
+        location: event.location,
+        meeting_start: event.start.dateTime,
+        meeting_end: event.end.dateTime,
+      };
+      const setDoc = db.collection('tbl_trip').doc(event.id).set(newData);
+    });
+
     res.send(events);
   }
 
