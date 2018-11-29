@@ -34,6 +34,7 @@ exports.getEvents = (req, res) => {
         location: event.location,
         meeting_start: event.start.dateTime,
         meeting_end: event.end.dateTime,
+        description: event.description || null,
       };
       const setDoc = db.collection('tbl_trip').doc(event.id).set(newData);
     });
