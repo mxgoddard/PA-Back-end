@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const { getEvents, landing } = require('../controllers/controller');
 const { direction } = require('../controllers/directions');
-const { entryPoint } = require('../controllers/entry.js');
+// const { entryPoint } = require('../controllers/entry.js');
 
 router
   .route('/')
@@ -15,8 +15,8 @@ router
   .route('/direction')
   .get(direction);
 
-router
-  .route('/entry')
-  .get(entryPoint);
+// router
+//   .route('/entry')
+//   .get(entryPoint);
 
 module.exports = router;
