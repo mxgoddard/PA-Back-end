@@ -21,8 +21,6 @@ exports.entryPoint = async (req, res) => {
       try {
         const { data } = await axios.get(BASE_URL);
 
-        res.send(data);
-
         const { arrival_time, departure_time, distance, duration, end_address, start_address } = data.routes[0].legs[0];
 
         const { departure_stop, arrival_stop, line } = data.routes[0].legs[0].steps[0].transit_details;
@@ -39,9 +37,9 @@ exports.entryPoint = async (req, res) => {
         refined.train_company = line.agencies[0].name;
 
         const setDoc = db.collection('tbl_trip').doc(event_id).set(refined);
+        res.send(refined)
       } catch (err) {
-        const data = { msg: `${err}` };
-        return data;
+        console.log(err);
       }
     }
   });
