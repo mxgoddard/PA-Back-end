@@ -22,11 +22,7 @@ exports.entryPoint = (req, res) => {
     distance: '',
     train_company: '',
   };
-<<<<<<< HEAD
   const setDoc = db.collection('tbl_trip').doc('hardcoded_trip_id').set(newData);
-=======
-  const setDoc = db.collection('tbl_user').doc('124').set(newData);
->>>>>>> f60f94ddf879ef5b2b41593162b1dbfbb5f11572
 
 
   // const { id } = req.query;

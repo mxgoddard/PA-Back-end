@@ -2,17 +2,9 @@ const fs = require('fs');
 const readline = require('readline');
 const { google } = require('googleapis');
 
-<<<<<<< HEAD
-
-exports.landing = (req, res) => {
-  res.send({
-    routes: ['/events', '/direction', "/entry (DON'T USE IT)"],
-  });
-=======
 exports.landing = (req, res) => {
   const landingObj = { msg: 'CONNECTED', routes: ['/', '/events', '/direction', '/entry'] };
   res.send(landingObj);
->>>>>>> f60f94ddf879ef5b2b41593162b1dbfbb5f11572
 };
 
 exports.getEvents = (req, res) => {
