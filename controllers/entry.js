@@ -6,55 +6,43 @@ const { GOOGLE_KEY } = process.env.GOOGLE_KEY || require('../config/index.js');
 
 exports.entryPoint = async (req, res) => {
 
-  const getDirections = async (event_id) => {
-    const db = admin.firestore();
-    const settings = { timestampsInSnapshots: true };
-    db.settings(settings);
+  const { event_id } = req.params;
+  const db = admin.firestore();
+  // const settings = { timestampsInSnapshots: true };
+  // db.settings(settings);
 
-    const event = db.collection('tbl_trip').doc(event_id);
-    const getDoc = event.get()
-      .then(async (doc) => {
-        if (!doc.exists) {
-          console.log('No such document!');
-        } else {
-          const loc = doc.data().location.split(' ').join('');
-          const BASE_URL = `https://maps.googleapis.com/maps/api/directions/json?origin=Manchester,UK&destination=${loc},UK&mode=transit&key=${GOOGLE_KEY}`;
-          try {
-            const { data } = await axios.get(BASE_URL);
+  const event = db.collection('tbl_events').doc(event_id);
+  const getDoc = event.get().then(async (doc) => {
+    if (!doc.exists) {
+      console.log('No such document!');
+    } else {
+      const loc = doc.data().location.split(' ').join('');
+      const BASE_URL = `https://maps.googleapis.com/maps/api/directions/json?origin=Manchester,UK&destination=${loc},UK&mode=transit&key=${GOOGLE_KEY}`;
+      try {
+        const { data } = await axios.get(BASE_URL);
 
-            // const { event_id } = req.params;
-            // const db = admin.firestore();
-            // const newData = {
-            //   start_address: '',
-            //   departure_stop: '',
-            //   departure_time: '',
-            //   end_address: '',
-            //   arrival_stop: '',
-            //   arrival_time: '',
-            //   duration: '',
-            //   distance: '',
-            //   train_company: '',
-            // };
+        res.send(data);
 
-            // const setDoc = db.collection('tbl_event').doc(event_id).set(newData);
-            res.send(data)
-          } catch (err) {
-            const data = { msg: `${err}` };
-            return data;
-          }
-        }
-      })
-      .catch((err) => {
-        console.log('Error getting document', err);
-      });
-  };
+        const { arrival_time, departure_time, distance, duration, end_address, start_address } = data.routes[0].legs[0];
 
+        const { departure_stop, arrival_stop, line } = data.routes[0].legs[0].steps[0].transit_details;
 
+        const refined = {};
+        refined.start_address = start_address;
+        refined.departure_stop = departure_stop.name;
+        refined.departure_time = departure_time.text;
+        refined.end_address = end_address;
+        refined.arrival_stop = arrival_stop.name;
+        refined.arrival_time = arrival_time.text;
+        refined.duration = duration.text;
+        refined.distance = distance.text;
+        refined.train_company = line.agencies[0].name;
 
-  // const data1 = await getDirections(event_id)
-  // // console.log(data1)
-  // return data1
-
-
-  // 
+        const setDoc = db.collection('tbl_trip').doc(event_id).set(refined);
+      } catch (err) {
+        const data = { msg: `${err}` };
+        return data;
+      }
+    }
+  });
 };

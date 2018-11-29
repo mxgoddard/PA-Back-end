@@ -27,7 +27,7 @@ exports.getEvents = (req, res) => {
         meeting_end: event.end.dateTime,
         description: event.description || null,
       };
-      const setDoc = db.collection('tbl_trip').doc(event.id).set(newData);
+      const setDoc = db.collection('tbl_events').doc(event.id).set(newData);
     });
 
     res.send(events);
