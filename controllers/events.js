@@ -3,12 +3,23 @@ const readline = require('readline');
 const { google } = require('googleapis');
 const admin = require('firebase-admin');
 
-const serviceAccount = require('../config/firebaseServiceAcc.json');
+const private_key = process.env.private_key || require('../config/firebaseServiceAcc.json').private_key;
+const client_email = process.env.client_email || require('../config/firebaseServiceAcc.json').client_email;
+
+// const serviceAccount = require('../config/firebaseServiceAcc.json');
 
 admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  databaseURL: 'https://projectpa-223310.firebaseio.com',
+  credential: admin.credential.cert({
+    "private_key": private_key,
+    "client_email": client_email,
+  }),
+  databaseURL: "https://projectpa-223310.firebaseio.com"
 });
+
+// admin.initializeApp({
+//   credential: admin.credential.cert(serviceAccount),
+//   databaseURL: 'https://projectpa-223310.firebaseio.com',
+// });
 // const serviceAccount = process.env.NODE_ENV !== 'production' ? require('../config/firebaseServiceAcc.json') : null;
 
 // console.log(process.env.NODE_ENV);
