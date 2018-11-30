@@ -11,10 +11,9 @@ admin.initializeApp({
 
 
 exports.getEvents = (req, res) => {
+
   function eventsSet(events) {
-
     const db = admin.firestore();
-
     events.map((event) => {
       const newData = {
         summary: event.summary,
@@ -29,6 +28,8 @@ exports.getEvents = (req, res) => {
     res.send(events);
   }
 
+
+  // GET EVENTS ------------------------------------------------------------------------------------- // 
   // If modifying these scopes, delete token.json.
   const SCOPES = ['https://www.googleapis.com/auth/calendar.readonly'];
   // The file token.json stores the user's access and refresh tokens, and is
@@ -111,7 +112,9 @@ exports.getEvents = (req, res) => {
       if (err) return console.log(`The API returned an error: ${err}`);
       const events = res.data.items;
       if (events.length) {
+
         eventsSet(events);
+
       } else {
         console.log('No upcoming events found.');
       }
