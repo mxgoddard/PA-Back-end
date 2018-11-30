@@ -1,17 +1,35 @@
 const fs = require('fs');
 const readline = require('readline');
 const { google } = require('googleapis');
+const admin = require('firebase-admin');
+const serviceAccount = require('../config/firebaseServiceAcc.json');
 
-exports.landing = (req, res) => {
-  const landingObj = { msg: 'CONNECTED', routes: ['/', '/events', '/direction', '/entry'] };
-  res.send(landingObj);
-};
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: 'https://projectpa-223310.firebaseio.com',
+});
+
 
 exports.getEvents = (req, res) => {
+
   function eventsSet(events) {
+    const db = admin.firestore();
+    events.map((event) => {
+      const newData = {
+        summary: event.summary,
+        location: event.location,
+        meeting_start: event.start.dateTime,
+        meeting_end: event.end.dateTime,
+        description: event.description || null,
+      };
+      const setDoc = db.collection('tbl_events').doc(event.id).set(newData);
+    });
+
     res.send(events);
   }
 
+
+  // GET EVENTS ------------------------------------------------------------------------------------- // 
   // If modifying these scopes, delete token.json.
   const SCOPES = ['https://www.googleapis.com/auth/calendar.readonly'];
   // The file token.json stores the user's access and refresh tokens, and is
@@ -94,7 +112,9 @@ exports.getEvents = (req, res) => {
       if (err) return console.log(`The API returned an error: ${err}`);
       const events = res.data.items;
       if (events.length) {
+
         eventsSet(events);
+
       } else {
         console.log('No upcoming events found.');
       }

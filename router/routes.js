@@ -1,22 +1,23 @@
 const router = require('express').Router();
-const { getEvents, landing } = require('../controllers/controller');
-const { direction } = require('../controllers/directions');
-// const { entryPoint } = require('../controllers/entry.js');
+const { homepage } = require('../controllers/homepage');
+const { getEvents } = require('../controllers/events');
+const { getEventById } = require('../controllers/event');
+const { getDirectionById } = require('../controllers/direction');
 
 router
   .route('/')
-  .get(landing);
+  .get(homepage);
 
 router
   .route('/events')
   .get(getEvents);
 
 router
-  .route('/direction')
-  .get(direction);
+  .route('/event/:event_id')
+  .get(getEventById);
 
-// router
-//   .route('/entry')
-//   .get(entryPoint);
+router
+  .route('/direction/:event_id')
+  .get(getDirectionById);
 
 module.exports = router;
