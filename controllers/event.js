@@ -7,7 +7,7 @@ exports.getEventById = (req, res) => {
   const events = db.collection('tbl_events').doc(event_id);
   const event = events.get()
     .then((event) => {
-      if (!event.data()) res.send({ msg: 'No data found' })
+      if (!event.data()) res.send({ msg: 'No document exists for the given id' })
       res.send(event.data())
     })
 }

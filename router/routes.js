@@ -23,5 +23,8 @@ router
   .route('/direction/:event_id')
   .get(getDirectionById);
 
+// router
+//   .route('/entry/:event_id')
+//   .get(entryPoint);
 
 module.exports = router;
