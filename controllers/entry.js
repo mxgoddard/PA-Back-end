@@ -17,7 +17,9 @@ exports.entryPoint = async (req, res) => {
       console.log('No such document!');
     } else {
       const loc = doc.data().location.split(' ').join('');
-      const BASE_URL = `https://maps.googleapis.com/maps/api/directions/json?origin=Manchester,UK&destination=${loc},UK&mode=transit&key=${GOOGLE_KEY}`;
+      const toConvertTime = Date.parse(doc.data().meeting_start)
+      const meeting_start = Number(String(toConvertTime).split('').slice(0, 10).join('')) - 18000
+      const BASE_URL = `https://maps.googleapis.com/maps/api/directions/json?origin=Manchester,UK&destination=${loc}&mode=transit&arrival_time=${meeting_start}&key=${GOOGLE_KEY}`;
       try {
         const { data } = await axios.get(BASE_URL);
 
@@ -43,7 +45,7 @@ exports.entryPoint = async (req, res) => {
         const allEvents = events.orderBy('meeting_start', 'asc').get()
           .then((snapshot) => {
             snapshot.forEach((doc) => {
-              console.log(doc.id, '=>', doc.data());
+              // console.log(doc.id, '=>', doc.data());
             });
           })
           .catch((err) => {
