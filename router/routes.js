@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const { homepage } = require('../controllers/homepage');
-const { getEvents, landing } = require('../controllers/controller');
+const { getEvents } = require('../controllers/events');
 const { direction } = require('../controllers/directions');
 const { entryPoint } = require('../controllers/entry.js');
 
