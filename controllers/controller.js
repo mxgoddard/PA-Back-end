@@ -9,10 +9,10 @@ admin.initializeApp({
   databaseURL: 'https://projectpa-223310.firebaseio.com',
 });
 
-exports.landing = (req, res) => {
-  const landingObj = { msg: 'CONNECTED', routes: ['/', '/events', '/direction', '/entry'] };
-  res.send(landingObj);
-};
+// exports.landing = (req, res) => {
+//   const landingObj = { msg: 'CONNECTED', routes: ['/', '/events', '/direction', '/entry'] };
+//   res.send(landingObj);
+// };
 
 exports.getEvents = (req, res) => {
   function eventsSet(events) {
