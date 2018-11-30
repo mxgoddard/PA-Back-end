@@ -2,13 +2,31 @@ const fs = require('fs');
 const readline = require('readline');
 const { google } = require('googleapis');
 const admin = require('firebase-admin');
+
 const serviceAccount = require('../config/firebaseServiceAcc.json');
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
   databaseURL: 'https://projectpa-223310.firebaseio.com',
 });
+// const serviceAccount = process.env.NODE_ENV !== 'production' ? require('../config/firebaseServiceAcc.json') : null;
 
+// console.log(process.env.NODE_ENV);
+
+// if (process.env.NODE_ENV !== 'development') {
+//   admin.initializeApp({
+//     credential: admin.credential.cert({
+//       "private_key": process.env.private_key,
+//       "client_email": process.env.client_email,
+//     }),
+//     databaseURL: "https://projectpa-223310.firebaseio.com"
+//   });
+// } else {
+//   admin.initializeApp({
+//     credential: admin.credential.cert(serviceAccount),
+//     databaseURL: 'https://projectpa-223310.firebaseio.com',
+//   });
+// }
 
 exports.getEvents = (req, res) => {
 
