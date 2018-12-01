@@ -5,8 +5,6 @@ const { getEventById } = require('../controllers/event');
 const { getDirectionById } = require('../controllers/direction');
 
 
-// const { entryPoint } = require('../controllers/entry.js');
-
 router
   .route('/')
   .get(homepage);
@@ -23,8 +21,5 @@ router
   .route('/direction/:event_id')
   .get(getDirectionById);
 
-// router
-//   .route('/entry/:event_id')
-//   .get(entryPoint);
 
 module.exports = router;

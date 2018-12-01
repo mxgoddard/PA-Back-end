@@ -3,7 +3,6 @@ const axios = require('axios');
 const { GOOGLE_KEY } = process.env.GOOGLE_KEY || require('../config/index.js');
 
 
-
 exports.getDirectionById = (req, res) => {
   const { event_id } = req.params
 

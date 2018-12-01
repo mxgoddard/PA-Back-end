@@ -4,10 +4,19 @@ const { google } = require('googleapis');
 const admin = require('firebase-admin');
 const serviceAccount = require('../config/firebaseServiceAcc.json');
 
+// admin.initializeApp({
+//   credential: admin.credential.cert(serviceAccount),
+//   databaseURL: 'https://projectpa-223310.firebaseio.com',
+// });
+
 admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  databaseURL: 'https://projectpa-223310.firebaseio.com',
+  credential: admin.credential.cert({
+    "private_key": process.env.FIREBASE_PRIVATE_KEY || serviceAccount.private_key,
+    "client_email": process.env.FIREBASE_CLIENT_EMAIL || serviceAccount.client_email,
+  }),
+  databaseURL: "https://projectpa-223310.firebaseio.com"
 });
+
 
 
 exports.getEvents = (req, res) => {
