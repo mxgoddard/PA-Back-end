@@ -2,7 +2,7 @@ const fs = require('fs');
 const readline = require('readline');
 const { google } = require('googleapis');
 const admin = require('firebase-admin');
-const serviceAccount = require('../config/firebaseServiceAcc.json') || null;
+const serviceAccount = null || require('../config/firebaseServiceAcc.json');
 
 // admin.initializeApp({
 //   credential: admin.credential.cert(serviceAccount),
