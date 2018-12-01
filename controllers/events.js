@@ -2,7 +2,7 @@ const fs = require('fs');
 const readline = require('readline');
 const { google } = require('googleapis');
 const admin = require('firebase-admin');
-const serviceAccount = null || require('../config/firebaseServiceAcc.json');
+// const serviceAccount = require('../config/firebaseServiceAcc.json');
 
 // admin.initializeApp({
 //   credential: admin.credential.cert(serviceAccount),
@@ -11,16 +11,16 @@ const serviceAccount = null || require('../config/firebaseServiceAcc.json');
 
 admin.initializeApp({
   credential: admin.credential.cert({
-    "type": process.env.FIREBASE_TYPE || serviceAccount.type,
-    "project_id": process.env.FIREBASE_PROJECT_ID || serviceAccount.project_id,
-    "private_key_id": process.env.FIREBASE_PRIVATE_KEY_ID || serviceAccount.private_key_id,
-    "private_key": process.env.FIREBASE_PRIVATE_KEY || serviceAccount.private_key,
-    "client_email": process.env.FIREBASE_CLIENT_EMAIL || serviceAccount.client_email,
-    "client_id": process.env.FIREBASE_CLIENT_ID || serviceAccount.client_id,
-    "auth_uri": process.env.FIREBASE_AUTH_URI || serviceAccount.auth_uri,
-    "token_uri": process.env.FIREBASE_TOKEN_URI || serviceAccount.token_uri,
-    "auth_provider_x509_cert_url": process.env.FIREBASE_AUTH_PROVIDER_X509_CERT_URL || serviceAccount.auth_provider_x509_cert_url,
-    "client_x509_cert_url": process.env.FIREBASE_CLIENT_X509_CERT_URL || serviceAccount.client_x509_cert_url,
+    "type": process.env.FIREBASE_TYPE,
+    "project_id": process.env.FIREBASE_PROJECT_ID,
+    "private_key_id": process.env.FIREBASE_PRIVATE_KEY_ID,
+    "private_key": process.env.FIREBASE_PRIVATE_KEY,
+    "client_email": process.env.FIREBASE_CLIENT_EMAIL,
+    "client_id": process.env.FIREBASE_CLIENT_ID,
+    "auth_uri": process.env.FIREBASE_AUTH_URI,
+    "token_uri": process.env.FIREBASE_TOKEN_URI,
+    "auth_provider_x509_cert_url": process.env.FIREBASE_AUTH_PROVIDER_X509_CERT_URL,
+    "client_x509_cert_url": process.env.FIREBASE_CLIENT_X509_CERT_URL,
   }),
   databaseURL: 'https://projectpa-223310.firebaseio.com',
 });
