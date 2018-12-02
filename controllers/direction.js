@@ -1,7 +1,7 @@
 const admin = require('firebase-admin');
 const axios = require('axios');
-// const { GOOGLE_KEY } = require('../config/index.js');
-const { GOOGLE_KEY } = process.env;
+const { GOOGLE_KEY } = require('../config/index.js');
+// const { GOOGLE_KEY } = process.env;
 
 exports.getDirectionById = (req, res) => {
   const { event_id } = req.params
