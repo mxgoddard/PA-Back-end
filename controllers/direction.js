@@ -1,7 +1,6 @@
 const admin = require('firebase-admin');
 const axios = require('axios');
-const { GOOGLE_KEY } = process.env || require('../config/index.js');
-
+const { GOOGLE_KEY } = require('../config/index.js') || process.env;
 
 exports.getDirectionById = (req, res) => {
   const { event_id } = req.params
@@ -16,7 +15,7 @@ exports.getDirectionById = (req, res) => {
     } else {
       const loc = doc.data().location.split(' ').join('');
       const toConvertTime = Date.parse(doc.data().meeting_start);
-      const meeting_start = Number(String(toConvertTime).split('').slice(0, 10).join('')) - 18000
+      const meeting_start = Number(String(toConvertTime).split('').slice(0, 10).join('')) - 18000;
       const BASE_URL = `https://maps.googleapis.com/maps/api/directions/json?origin=Manchester,UK&destination=${loc}&mode=transit&arrival_time=${meeting_start}&key=${GOOGLE_KEY}`;
       try {
         const { data } = await axios.get(BASE_URL);
