@@ -32,16 +32,7 @@ exports.getDirectionById = (req, res) => {
 
         const train_journey = data.routes[0].legs[0].steps.filter(travel => travel.travel_mode === 'TRANSIT');
 
-        // train_journey.forEach((leg, i) => {
-
-        //   // Change database location
-        //   if (!i) {
-        //     // a
-        //   } else {
-        //     // b
-        //   };
-        // });
-
+      
         const { arrival_time, departure_time, distance, duration, end_address, start_address } = data.routes[0].legs[0];
         const { departure_stop, arrival_stop, line } = data.routes[0].legs[0].steps[0].transit_details;
 
