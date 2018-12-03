@@ -42,11 +42,18 @@ exports.getDirectionById = (req, res) => {
         const dateUrl = new Date(date);
         const finalDateUrl = dateUrl.toISOString().substring(0, 10).split('-').reverse().join('');
         const slicedMinutes = departure_time.text.split(':')[1].slice(-4, -2);
+<<<<<<< HEAD
         const timeUrl = /pm/.test(departure_time.text) ? Number(String(Number(departure_time.text.slice(0, -5)) + 12) + slicedMinutes) : Number(departure_time.text.slice(0, 4).split(':').join(''));
 
+=======
+        let timeUrl = /pm/.test(departure_time.text) ? Number(String(Number(departure_time.text.slice(0, -5)) + 12) + slicedMinutes) : Number(departure_time.text.slice(0,4).split(':').join(''));  
+        if (String(timeUrl).length === 3) timeUrl = 0 + String(timeUrl);
+
+        console.log(timeUrl);
+>>>>>>> ab1cc6f19a33e71d3477de280d6ef37e49d1caee
 
         const refined = {};
-        refined.booking_url = `http://ojp.nationalrail.co.uk/service/timesandfares/${start_station}/${end_station}/${finalDateUrl}/${timeUrl}/dep?utm_source=googlemaps&utm_medium=web&utm_campaign=googlemaps`;
+        refined.booking_url = `http://ojp.nationalrail.co.uk/service/timesandfares/${start_station}/${end_station}/${finalDateUrl}/${String(timeUrl)}/dep?utm_source=googlemaps&utm_medium=web&utm_campaign=googlemaps`;
         refined.date = date;
         refined.start_address = start_address;
         refined.departure_stop = departure_stop.name;
