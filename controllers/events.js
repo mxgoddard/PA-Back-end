@@ -9,18 +9,6 @@ admin.initializeApp({
   databaseURL: 'https://projectpa-223310.firebaseio.com',
 });
 
-<<<<<<< HEAD:controllers/controller.js
-exports.travel = async (req, res) => {
-  getTravelData().then((data) => {
-    res.send(data);
-  });
-};
-
-exports.landing = (req, res) => {
-  const landingObj = { msg: 'CONNECTED', routes: ['/', '/events', '/direction', '/travel'] };
-  res.send(landingObj);
-};
-=======
 // admin.initializeApp({
 //   credential: admin.credential.cert({
 //     "type": process.env.FIREBASE_TYPE,
@@ -36,7 +24,6 @@ exports.landing = (req, res) => {
 //   }),
 //   databaseURL: 'https://projectpa-223310.firebaseio.com',
 // });
->>>>>>> adc6725260c74452047c6301f5717831949e9e83:controllers/events.js
 
 
 exports.getEvents = (req, res) => {
@@ -57,11 +44,6 @@ exports.getEvents = (req, res) => {
     res.send(events);
   }
 
-<<<<<<< HEAD:controllers/controller.js
-=======
-
-  // GET EVENTS ------------------------------------------------------------------------------------- // 
->>>>>>> adc6725260c74452047c6301f5717831949e9e83:controllers/events.js
   // If modifying these scopes, delete token.json.
   const SCOPES = ['https://www.googleapis.com/auth/calendar.readonly'];
   // The file token.json stores the user's access and refresh tokens, and is
