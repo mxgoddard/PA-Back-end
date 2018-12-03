@@ -1,7 +1,7 @@
 const admin = require('firebase-admin');
 const axios = require('axios');
-const { GOOGLE_KEY } = require('../config/index.js');
-// const { GOOGLE_KEY } = process.env;
+// const { GOOGLE_KEY } = require('../config/index.js');
+const { GOOGLE_KEY } = process.env;
 const db = admin.firestore();
 
 exports.getDirectionById = (req, res) => {
@@ -32,7 +32,7 @@ exports.getDirectionById = (req, res) => {
 
         const train_journey = data.routes[0].legs[0].steps.filter(travel => travel.travel_mode === 'TRANSIT');
 
-      
+
         const { arrival_time, departure_time, distance, duration, end_address, start_address } = data.routes[0].legs[0];
         const { departure_stop, arrival_stop, line } = data.routes[0].legs[0].steps[0].transit_details;
 
@@ -42,8 +42,8 @@ exports.getDirectionById = (req, res) => {
         const dateUrl = new Date(date);
         const finalDateUrl = dateUrl.toISOString().substring(0, 10).split('-').reverse().join('');
         const slicedMinutes = departure_time.text.split(':')[1].slice(-4, -2);
-        const timeUrl = /pm/.test(departure_time.text) ? Number(String(Number(departure_time.text.slice(0, -5)) + 12) + slicedMinutes) : Number(departure_time.text.slice(0,4).split(':').join(''));  
-    
+        const timeUrl = /pm/.test(departure_time.text) ? Number(String(Number(departure_time.text.slice(0, -5)) + 12) + slicedMinutes) : Number(departure_time.text.slice(0, 4).split(':').join(''));
+
 
         const refined = {};
         refined.booking_url = `http://ojp.nationalrail.co.uk/service/timesandfares/${start_station}/${end_station}/${finalDateUrl}/${timeUrl}/dep?utm_source=googlemaps&utm_medium=web&utm_campaign=googlemaps`;
