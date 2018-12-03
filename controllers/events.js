@@ -1,14 +1,15 @@
 const fs = require('fs');
 const readline = require('readline');
 const { google } = require('googleapis');
-const axios = require('axios');
+const admin = require('firebase-admin');
+const serviceAccount = require('../config/firebaseServiceAcc.json');
 
-const getTravelData = async () => {
-  const BASE_URL = 'https://transportapi.com/v3/uk/train/station/MAN/live.json?limit=10?limit=5&app_id=3bc83bc3&app_key=fd49246069f6445cc21bd4ceb1d0351b';
-  const { data } = await axios.get(BASE_URL);
-  return data;
-};
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: 'https://projectpa-223310.firebaseio.com',
+});
 
+<<<<<<< HEAD:controllers/controller.js
 exports.travel = async (req, res) => {
   getTravelData().then((data) => {
     res.send(data);
@@ -19,13 +20,48 @@ exports.landing = (req, res) => {
   const landingObj = { msg: 'CONNECTED', routes: ['/', '/events', '/direction', '/travel'] };
   res.send(landingObj);
 };
+=======
+// admin.initializeApp({
+//   credential: admin.credential.cert({
+//     "type": process.env.FIREBASE_TYPE,
+//     "project_id": process.env.FIREBASE_PROJECT_ID,
+//     "private_key_id": process.env.FIREBASE_PRIVATE_KEY_ID,
+//     "private_key": process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n'),
+//     "client_email": process.env.FIREBASE_CLIENT_EMAIL,
+//     "client_id": process.env.FIREBASE_CLIENT_ID,
+//     "auth_uri": process.env.FIREBASE_AUTH_URI,
+//     "token_uri": process.env.FIREBASE_TOKEN_URI,
+//     "auth_provider_x509_cert_url": process.env.FIREBASE_AUTH_PROVIDER_X509_CERT_URL,
+//     "client_x509_cert_url": process.env.FIREBASE_CLIENT_X509_CERT_URL,
+//   }),
+//   databaseURL: 'https://projectpa-223310.firebaseio.com',
+// });
+>>>>>>> adc6725260c74452047c6301f5717831949e9e83:controllers/events.js
 
 
 exports.getEvents = (req, res) => {
+
   function eventsSet(events) {
+    const db = admin.firestore();
+    events.map((event) => {
+      const newData = {
+        summary: event.summary,
+        location: event.location,
+        meeting_start: event.start.dateTime,
+        meeting_end: event.end.dateTime,
+        description: event.description || null,
+      };
+      const setDoc = db.collection('tbl_events').doc(event.id).set(newData);
+    });
+
     res.send(events);
   }
 
+<<<<<<< HEAD:controllers/controller.js
+=======
+
+  // GET EVENTS ------------------------------------------------------------------------------------- // 
+>>>>>>> adc6725260c74452047c6301f5717831949e9e83:controllers/events.js
   // If modifying these scopes, delete token.json.
   const SCOPES = ['https://www.googleapis.com/auth/calendar.readonly'];
   // The file token.json stores the user's access and refresh tokens, and is
@@ -108,9 +144,9 @@ exports.getEvents = (req, res) => {
       if (err) return console.log(`The API returned an error: ${err}`);
       const events = res.data.items;
       if (events.length) {
-        // console.log(userEvents)
-        // userEvents = events;
+
         eventsSet(events);
+
       } else {
         console.log('No upcoming events found.');
       }

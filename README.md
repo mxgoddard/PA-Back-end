@@ -8,14 +8,24 @@ Install all dependecies.
 $ npm install
 ```
 
-Create a config file inside root with a token.json file. Paste the key inside the token file.
+Inside config file, make an index.js with the following code.
+
+```js
+const env = process.env.NODE_ENV || 'development';
+
+const config = {
+  development: {
+    GOOGLE_KEY: '<INSERT GOOGLE API KEY>',
+  },
+};
+
+module.exports = config[env];
+```
+
+### Development
+
+One of the dependencies is nodemon, inside your terminal run nodemon to run the app locally.
 
 ```
-$ mkdir config ; cd config ; touch token.json
-```
-
-Create a credentials.json in the root, with the necessary credential object inside.
-
-```
-$ touch credentials.json
+$ nodemon index.js
 ```
