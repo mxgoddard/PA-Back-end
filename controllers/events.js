@@ -29,6 +29,7 @@ admin.initializeApp({
 exports.getEvents = (req, res) => {
 
   function eventsSet(events) {
+    // console.log(events)
     const db = admin.firestore();
     events.map((event) => {
       const newData = {
@@ -37,6 +38,7 @@ exports.getEvents = (req, res) => {
         meeting_start: event.start.dateTime,
         meeting_end: event.end.dateTime,
         description: event.description || null,
+        // tokenID:
       };
       const setDoc = db.collection('tbl_events').doc(event.id).set(newData);
     });
@@ -115,7 +117,7 @@ exports.getEvents = (req, res) => {
   function listEvents(auth) {
     // console.log(auth)
     const calendar = google.calendar({ version: 'v3', auth });
-    // console.log(calendar)
+    console.log(calendar)
     calendar.events.list({
       calendarId: 'primary',
       timeMin: (new Date()).toISOString(),

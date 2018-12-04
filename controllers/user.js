@@ -2,32 +2,35 @@ const admin = require('firebase-admin');
 const fs = require('fs');
 
 const db = admin.firestore();
-let token = 'user_id';
 
-const getToken = () => {
-  fs.readFile('./config/token.json', 'utf-8', (err, data) => {
-    if (err) throw err;
-    token = JSON.parse(data).access_token;
-    return token;
-  });
-};
+let token = 'nnn';
 
-exports.getUser = (req, res) => {
-  // Grab access token
+exports.getUser = async (req, res) => {
+  // fs.readFile('./config/token.json', 'utf-8', async (err, data) => {
+  //   if (err) throw err;
+  //   token = await JSON.parse(data).access_token;
+  //   return token;
+  // });
   // db.collection('tbl_user').doc(getToken())
   //   .get().then((user) => {
   //     res.send(user.data());
   //   });
-  res.send(token);
+  res.send(`hello`);
 };
 
 exports.postUserInfo = (req, res) => {
+  fs.readFile('./config/token.json', 'utf-8', async (err, data) => {
+    if (err) throw err;
+    token = await JSON.parse(data).access_token;
+    return token;
+  });
   const newUserInfo = {
     user: req.body.user,
     home_address: req.body.home_address,
     office_address: req.body.office_address,
   };
-  db.collection('tbl_user').doc().set(newUserInfo);
+  console.log(token)
+  db.collection('tbl_user').doc(token).set(newUserInfo);
 
   res.send({ msg: 'successfully post user info' });
 };
