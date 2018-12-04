@@ -5,7 +5,8 @@ const { GOOGLE_KEY } = process.env;
 const db = admin.firestore();
 
 exports.getDirectionById = (req, res) => {
-  const { event_id, start } = req.params;
+  const { event_id } = req.params;
+  let { start } = req.query;
 
   const event = db.collection('tbl_events').doc(event_id);
   const getDoc = event.get().then(async (doc) => {
