@@ -40,15 +40,14 @@ exports.getDirectionById = (req, res) => {
         // const { returnData } = new Promise(await axios.get(RETURN_URL));
         // const { returnData } = await axios.get(RETURN_URL);
 
-        getData();
+        getData(BASE_URL, RETURN_URL).then((data) => {
+          console.log(data);
+        });
 
         // const promise1 = new Promise((resolve, reject) => {
         //   const { data } = await axios.get(BASE_URL)
         // });
 
-        Promise.all([data, returnData]).then((results) => {
-          console.log(results);
-        });
         // console.log(returnData);
         // const returnObj = getReturnObject(event_id, doc, returnData);
 
@@ -138,10 +137,13 @@ function getReturnObject(event_id, doc, data) {
 }
 
 async function getData(BASE_URL, RETURN_URL) {
+  const travelData = [];
   try {
-    const { data } = await axios.get(BASE_URL);
-    const { returnData } = await axios.get(RETURN_URL);
+    await axios.get(BASE_URL).then(({ data }) => travelData.push(data));
+    await axios.get(RETURN_URL).then(({ data }) => travelData.push(data));
+    // console.log(travelData);
   } catch (err) {
     console.log(err);
   }
+  return travelData;
 }
