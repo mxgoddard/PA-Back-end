@@ -32,29 +32,14 @@ exports.getDirectionById = (req, res) => {
       const BASE_URL = `https://maps.googleapis.com/maps/api/directions/json?origin=${origin}&destination=${loc}&mode=transit&arrival_time=${meeting_start}&key=${GOOGLE_KEY}`;
       const RETURN_URL = `https://maps.googleapis.com/maps/api/directions/json?origin=${loc}&destination=${origin}&mode=transit&departure_time=${meeting_end}&key=${GOOGLE_KEY}`;
       try {
-        // const { data } = await axios.get(BASE_URL);
-        // const { data } = new Promise((resolve, reject) => {
-        //   await axios.get(BASE_URL)
-        // });
-        // const departObj = getDepartObject(event_id, doc, data);
-        // const { returnData } = new Promise(await axios.get(RETURN_URL));
-        // const { returnData } = await axios.get(RETURN_URL);
-
         getData(BASE_URL, RETURN_URL).then((data) => {
-          console.log(data);
+          const departObj = getDepartObject(event_id, doc, data[0]);
+          const returnObj = getReturnObject(event_id, doc, data[1]);
+          const travelObj = [];
+          travelObj.push(departObj, returnObj);
+          const setDoc = db.collection('tbl_trip').doc(event_id).set({ travelObj });
+          res.send(travelObj);
         });
-
-        // const promise1 = new Promise((resolve, reject) => {
-        //   const { data } = await axios.get(BASE_URL)
-        // });
-
-        // console.log(returnData);
-        // const returnObj = getReturnObject(event_id, doc, returnData);
-
-        // const travelObj = [];
-        // travelObj.push(departObj, returnObj);
-
-        // res.send(travelObj);
       } catch (err) {
         console.log(err);
       }
@@ -93,8 +78,6 @@ function getDepartObject(event_id, doc, data) {
   departTravel.distance = distance.text;
   departTravel.train_company = line.agencies[0].name;
 
-  const setDoc = db.collection('tbl_trip').doc(event_id).set(departTravel);
-
   return departTravel;
 }
 
@@ -118,22 +101,20 @@ function getReturnObject(event_id, doc, data) {
   let timeUrl = /pm/.test(departure_time.text) ? Number(String(Number(departure_time.text.slice(0, -5)) + 12) + slicedMinutes) : Number(departure_time.text.slice(0, 4).split(':').join(''));
   if (String(timeUrl).length === 3) timeUrl = 0 + String(timeUrl);
 
-  const departTravel = {};
-  departTravel.booking_url = `http://ojp.nationalrail.co.uk/service/timesandfares/${start_station}/${end_station}/${finalDateUrl}/${String(timeUrl)}/dep?utm_source=googlemaps&utm_medium=web&utm_campaign=googlemaps`;
-  departTravel.date = date;
-  departTravel.start_address = start_address;
-  departTravel.departure_stop = departure_stop.name;
-  departTravel.departure_time = departure_time.text;
-  departTravel.end_address = end_address;
-  departTravel.arrival_stop = arrival_stop.name;
-  departTravel.arrival_time = arrival_time.text;
-  departTravel.duration = duration.text;
-  departTravel.distance = distance.text;
-  departTravel.train_company = line.agencies[0].name;
+  const returnTravel = {};
+  returnTravel.r_booking_url = `http://ojp.nationalrail.co.uk/service/timesandfares/${start_station}/${end_station}/${finalDateUrl}/${String(timeUrl)}/dep?utm_source=googlemaps&utm_medium=web&utm_campaign=googlemaps`;
+  returnTravel.r_date = date;
+  returnTravel.r_start_address = start_address;
+  returnTravel.r_departure_stop = departure_stop.name;
+  returnTravel.r_departure_time = departure_time.text;
+  returnTravel.r_end_address = end_address;
+  returnTravel.r_arrival_stop = arrival_stop.name;
+  returnTravel.r_arrival_time = arrival_time.text;
+  returnTravel.r_duration = duration.text;
+  returnTravel.r_distance = distance.text;
+  returnTravel.r_train_company = line.agencies[0].name;
 
-  const setDoc = db.collection('tbl_trip').doc(event_id).set(departTravel);
-
-  return departTravel;
+  return returnTravel;
 }
 
 async function getData(BASE_URL, RETURN_URL) {
