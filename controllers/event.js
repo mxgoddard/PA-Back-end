@@ -13,6 +13,7 @@ exports.getEventById = (req, res) => {
     });
 };
 
+
 exports.patchHandledEvent = (req, res) => {
   // Get all documents from tbl_confirmedTrip where user_id as a field is current token
   const { eventId } = req.params;
@@ -29,7 +30,7 @@ exports.patchHandledEvent = (req, res) => {
       res.send({ msg: 'Event has been handled', data: newEvent });
     });
   } else {
-    res.send({ msg: `${ handled } is an invalid query, please use either true / false` });
+    res.send({ msg: `${handled} is an invalid query, please use either true / false` });
   }
 };
 
