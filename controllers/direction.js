@@ -15,8 +15,11 @@ exports.getDirectionById = (req, res) => {
       .get().then((user) => {
         if (start === 'home') {
           origin = encodeURI(user.data().home_address);
-        } else {
+        } else if (start === 'office') {
           origin = encodeURI(user.data().office_address);
+        } else {
+          start = 'home';
+          origin = encodeURI(user.data().home_address);
         }
       });
     if (!doc.exists) {
@@ -32,7 +35,7 @@ exports.getDirectionById = (req, res) => {
       const RETURN_URL = `https://maps.googleapis.com/maps/api/directions/json?origin=${loc}&destination=${origin}&mode=transit&departure_time=${meeting_end}&key=${GOOGLE_KEY}`;
       try {
         getData(BASE_URL, RETURN_URL).then((data) => {
-          const departObj = getDepartObject(event_id, doc, data[0]);
+          const departObj = getDepartObject(event_id, doc, data[0], start);
           const returnObj = getReturnObject(event_id, doc, data[1]);
           departObj.booking_url = buildTravelLink(departObj, returnObj, doc);
           const travelObj = [];
@@ -47,7 +50,7 @@ exports.getDirectionById = (req, res) => {
   });
 };
 
-function getDepartObject(event_id, doc, data) {
+function getDepartObject(event_id, doc, data, start) {
   const train_journey = data.routes[0].legs[0].steps.filter(travel => travel.travel_mode === 'TRANSIT');
 
   const { arrival_time, departure_time, distance, duration, end_address, start_address } = data.routes[0].legs[0];
@@ -64,6 +67,7 @@ function getDepartObject(event_id, doc, data) {
 
   const departTravel = {};
   departTravel.booking_url = `http://ojp.nationalrail.co.uk/service/timesandfares/${start_station}/${end_station}/${finalDateUrl}/${String(timeUrl)}/dep?utm_source=googlemaps&utm_medium=web&utm_campaign=googlemaps`;
+  departTravel.start = start;
   departTravel.date = date;
   departTravel.start_address = start_address;
   departTravel.departure_stop = departure_stop.name;

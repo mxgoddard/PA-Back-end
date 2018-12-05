@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const { homepage } = require('../controllers/homepage');
 const { getEvents } = require('../controllers/events');
-const { getEventById, getHandledEvent } = require('../controllers/event');
+const { getEventById, patchHandledEvent } = require('../controllers/event');
 const { getDirectionById } = require('../controllers/direction');
 const { getUser, postUserInfo } = require('../controllers/user');
 
@@ -20,7 +20,7 @@ router
 
 router
   .route('/handledEvent/:eventId')
-  .get(getHandledEvent);
+  .patch(patchHandledEvent);
 
 router
   .route('/direction/:event_id')
