@@ -18,12 +18,16 @@ exports.getHandledEvent = (req, res) => {
   const { handled } = req.query;
 
   if (handled === 'true' || handled === 'false') {
-    const handledEvent = {
-      handled,
-    };
-    const event = db.collection('tbl_events').doc(eventId);
 
-    console.log(event.data())
+    const event = db.collection('tbl_events').doc(eventId);
+    const getDoc = event.get().then(async (doc) => {
+      console.log(doc.data());
+      const newEvent = doc.data();
+      newEvent.handled = handled;
+      db.collection('tbl_events').doc(eventId).set({ newEvent });
+      res.send({ msg: 'Event has been handled', data: newEvent });
+    });
+
     // const getEvent = event.get().then(data => data)
     //   const handledEvent = {
     //     handled,
@@ -33,5 +37,7 @@ exports.getHandledEvent = (req, res) => {
     // } else {
     //   res.send({ msg: 'query has NOT been updated' });
     // }
+  } else {
+    res.send({ msg: 'Invalid query'});
   }
 };

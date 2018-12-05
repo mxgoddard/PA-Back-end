@@ -11,7 +11,7 @@ exports.getDirectionById = (req, res) => {
   const event = db.collection('tbl_events').doc(event_id);
   const getDoc = event.get().then(async (doc) => {
     let origin = 'Manchester,UK';
-    await db.collection('tbl_user').doc('user_id')
+    await db.collection('tbl_user').doc('user_id') // NEED TO CHANGE THIS FOR DYNAMIC
       .get().then((user) => {
         if (start === 'home') {
           origin = encodeURI(user.data().home_address);
