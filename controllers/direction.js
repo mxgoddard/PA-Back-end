@@ -11,7 +11,6 @@ exports.getDirectionById = (req, res) => {
   const event = db.collection('tbl_events').doc(event_id);
   const getDoc = event.get().then(async (doc) => {
     let origin = 'Manchester,UK';
-    // Grab user database
     await db.collection('tbl_user').doc('user_id')
       .get().then((user) => {
         if (start === 'home') {
@@ -35,6 +34,7 @@ exports.getDirectionById = (req, res) => {
         getData(BASE_URL, RETURN_URL).then((data) => {
           const departObj = getDepartObject(event_id, doc, data[0]);
           const returnObj = getReturnObject(event_id, doc, data[1]);
+          departObj.booking_url = buildTravelLink(departObj, returnObj, doc);
           const travelObj = [];
           travelObj.push(departObj, returnObj);
           const setDoc = db.collection('tbl_trip').doc(event_id).set({ travelObj });
@@ -48,10 +48,7 @@ exports.getDirectionById = (req, res) => {
 };
 
 function getDepartObject(event_id, doc, data) {
-  // const { returnData } = await axios.get(BASE_URL);
-
   const train_journey = data.routes[0].legs[0].steps.filter(travel => travel.travel_mode === 'TRANSIT');
-  // const return_train_journey = returnData.routes[0].legs[0].steps.filter(travel => travel.travel_mode === 'TRANSIT');
 
   const { arrival_time, departure_time, distance, duration, end_address, start_address } = data.routes[0].legs[0];
   const { departure_stop, arrival_stop, line } = data.routes[0].legs[0].steps[0].transit_details;
@@ -84,25 +81,14 @@ function getDepartObject(event_id, doc, data) {
 // Need to make this DRY
 function getReturnObject(event_id, doc, data) {
   console.log(data);
-  // const { returnData } = await axios.get(BASE_URL);
-
   const train_journey = data.routes[0].legs[0].steps.filter(travel => travel.travel_mode === 'TRANSIT');
-  // const return_train_journey = returnData.routes[0].legs[0].steps.filter(travel => travel.travel_mode === 'TRANSIT');
 
   const { arrival_time, departure_time, distance, duration, end_address, start_address } = data.routes[0].legs[0];
   const { departure_stop, arrival_stop, line } = data.routes[0].legs[0].steps[0].transit_details;
 
-  const start_station = departure_stop.name.split(' ').join('%20');
-  const end_station = arrival_stop.name.split(' ').join('%20');
   const date = doc.data().meeting_start;
-  const dateUrl = new Date(date);
-  const finalDateUrl = dateUrl.toISOString().substring(0, 10).split('-').reverse().join('');
-  const slicedMinutes = departure_time.text.split(':')[1].slice(-4, -2);
-  let timeUrl = /pm/.test(departure_time.text) ? Number(String(Number(departure_time.text.slice(0, -5)) + 12) + slicedMinutes) : Number(departure_time.text.slice(0, 4).split(':').join(''));
-  if (String(timeUrl).length === 3) timeUrl = 0 + String(timeUrl);
 
   const returnTravel = {};
-  returnTravel.r_booking_url = `http://ojp.nationalrail.co.uk/service/timesandfares/${start_station}/${end_station}/${finalDateUrl}/${String(timeUrl)}/dep?utm_source=googlemaps&utm_medium=web&utm_campaign=googlemaps`;
   returnTravel.r_date = date;
   returnTravel.r_start_address = start_address;
   returnTravel.r_departure_stop = departure_stop.name;
@@ -122,9 +108,28 @@ async function getData(BASE_URL, RETURN_URL) {
   try {
     await axios.get(BASE_URL).then(({ data }) => travelData.push(data));
     await axios.get(RETURN_URL).then(({ data }) => travelData.push(data));
-    // console.log(travelData);
   } catch (err) {
     console.log(err);
   }
   return travelData;
+}
+
+function buildTravelLink(departObj, returnObj, doc) {
+  const start_station = departObj.departure_stop.split(' ').join('%20');
+  const end_station = departObj.arrival_stop.split(' ').join('%20');
+
+  const date = doc.data().meeting_start;
+  const dateUrl = new Date(date);
+  const returnDate = dateUrl.toISOString().substring(0, 10).split('-').reverse().join('');
+
+  const returnSlicedMinutes = returnObj.r_departure_time.split(':')[1].slice(-4, -2);
+  let returnDepartTime = /pm/.test(returnObj.r_departure_time) ? Number(String(Number(returnObj.r_departure_time.slice(0, -5)) + 12) + returnSlicedMinutes) : Number(returnObj.r_departure_time.slice(0, 4).split(':').join(''));
+  if (String(returnDepartTime).length === 3) returnDepartTime = 0 + String(returnDepartTime);
+
+  const departSlicedMinutes = departObj.departure_time.split(':')[1].slice(-4, -2);
+  let departTime = /pm/.test(departObj.departure_time) ? Number(String(Number(departObj.departure_time.slice(0, -5)) + 12) + departSlicedMinutes) : Number(departObj.departure_time.slice(0, 4).split(':').join(''));
+  if (String(departTime).length === 3) departTime = 0 + String(departTime);
+
+  const url = `http://ojp.nationalrail.co.uk/service/timesandfares/${start_station}/${end_station}/${returnDate}/${String(departTime)}/arr/${returnDate}/${String(returnDepartTime)}/dep?utm_source=googlemaps&utm_medium=web&utm_campaign=googlemaps`;
+  return url;
 }
