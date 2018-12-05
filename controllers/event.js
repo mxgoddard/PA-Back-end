@@ -24,7 +24,7 @@ exports.getHandledEvent = (req, res) => {
       console.log(doc.data());
       const newEvent = doc.data();
       newEvent.handled = handled;
-      db.collection('tbl_events').doc(eventId).set({ newEvent });
+      db.collection('tbl_events').doc(eventId).set(newEvent);
       res.send({ msg: 'Event has been handled', data: newEvent });
     });
 
@@ -38,6 +38,6 @@ exports.getHandledEvent = (req, res) => {
     //   res.send({ msg: 'query has NOT been updated' });
     // }
   } else {
-    res.send({ msg: 'Invalid query'});
+    res.send({ msg: 'Invalid query' });
   }
 };

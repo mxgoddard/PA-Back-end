@@ -40,7 +40,7 @@ exports.getEvents = (req, res) => {
         description: event.description || null,
         // tokenID: ###
       };
-      const setDoc = db.collection('tbl_events').doc(event.id).set(newData);
+      const setDoc = db.collection('tbl_events').doc(event.id).update(newData);
     });
 
     res.send(events);
