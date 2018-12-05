@@ -9,8 +9,25 @@ admin.initializeApp({
   databaseURL: 'https://projectpa-223310.firebaseio.com',
 });
 
+// admin.initializeApp({
+//   credential: admin.credential.cert({
+//     "type": process.env.FIREBASE_TYPE,
+//     "project_id": process.env.FIREBASE_PROJECT_ID,
+//     "private_key_id": process.env.FIREBASE_PRIVATE_KEY_ID,
+//     "private_key": process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n'),
+//     "client_email": process.env.FIREBASE_CLIENT_EMAIL,
+//     "client_id": process.env.FIREBASE_CLIENT_ID,
+//     "auth_uri": process.env.FIREBASE_AUTH_URI,
+//     "token_uri": process.env.FIREBASE_TOKEN_URI,
+//     "auth_provider_x509_cert_url": process.env.FIREBASE_AUTH_PROVIDER_X509_CERT_URL,
+//     "client_x509_cert_url": process.env.FIREBASE_CLIENT_X509_CERT_URL,
+//   }),
+//   databaseURL: 'https://projectpa-223310.firebaseio.com',
+// });
+
 
 exports.getEvents = (req, res) => {
+  // Get token from credentials - This makes events dynamic
 
   function eventsSet(events) {
     const db = admin.firestore();
@@ -21,6 +38,7 @@ exports.getEvents = (req, res) => {
         meeting_start: event.start.dateTime,
         meeting_end: event.end.dateTime,
         description: event.description || null,
+        // tokenID: ###
       };
       const setDoc = db.collection('tbl_events').doc(event.id).set(newData);
     });
@@ -28,8 +46,6 @@ exports.getEvents = (req, res) => {
     res.send(events);
   }
 
-
-  // GET EVENTS ------------------------------------------------------------------------------------- // 
   // If modifying these scopes, delete token.json.
   const SCOPES = ['https://www.googleapis.com/auth/calendar.readonly'];
   // The file token.json stores the user's access and refresh tokens, and is
@@ -101,7 +117,7 @@ exports.getEvents = (req, res) => {
   function listEvents(auth) {
     // console.log(auth)
     const calendar = google.calendar({ version: 'v3', auth });
-    // console.log(calendar)
+    console.log(calendar)
     calendar.events.list({
       calendarId: 'primary',
       timeMin: (new Date()).toISOString(),
