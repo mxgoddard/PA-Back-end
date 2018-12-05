@@ -8,7 +8,6 @@ exports.getUser = async (req, res) => {
   fs.readFile(TOKEN_PATH, (err, token) => {
     if (err) console.log(err);
     db.collection('tbl_user').doc(JSON.parse(token).access_token).get().then((user) => {
-      console.log(JSON.parse(token).access_token);
       res.send(user.data());
     });
   });

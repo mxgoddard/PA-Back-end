@@ -13,7 +13,6 @@ exports.getEventById = (req, res) => {
     });
 };
 
-
 exports.patchHandledEvent = (req, res) => {
   // Get all documents from tbl_confirmedTrip where user_id as a field is current token
   const { eventId } = req.params;
@@ -23,7 +22,6 @@ exports.patchHandledEvent = (req, res) => {
 
     const event = db.collection('tbl_events').doc(eventId);
     const getDoc = event.get().then(async (doc) => {
-      console.log(doc.data());
       const newEvent = doc.data();
       newEvent.handled = handled;
       db.collection('tbl_events').doc(eventId).set(newEvent);

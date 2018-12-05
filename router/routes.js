@@ -5,7 +5,6 @@ const { getEventById, patchHandledEvent, getHandledEvents } = require('../contro
 const { getDirectionById } = require('../controllers/direction');
 const { getUser, postUserInfo } = require('../controllers/user');
 
-
 router
   .route('/')
   .get(homepage);
@@ -34,6 +33,5 @@ router
   .route('/user')
   .get(getUser)
   .post(postUserInfo);
-
 
 module.exports = router;

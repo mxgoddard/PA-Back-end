@@ -2,33 +2,30 @@ const fs = require('fs');
 const readline = require('readline');
 const { google } = require('googleapis');
 const admin = require('firebase-admin');
-// const serviceAccount = require('../config/firebaseServiceAcc.json');
-
-// admin.initializeApp({
-//   credential: admin.credential.cert(serviceAccount),
-//   databaseURL: 'https://projectpa-223310.firebaseio.com',
-// });
+const serviceAccount = require('../config/firebaseServiceAcc.json');
 
 admin.initializeApp({
-  credential: admin.credential.cert({
-    "type": process.env.FIREBASE_TYPE,
-    "project_id": process.env.FIREBASE_PROJECT_ID,
-    "private_key_id": process.env.FIREBASE_PRIVATE_KEY_ID,
-    "private_key": process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n'),
-    "client_email": process.env.FIREBASE_CLIENT_EMAIL,
-    "client_id": process.env.FIREBASE_CLIENT_ID,
-    "auth_uri": process.env.FIREBASE_AUTH_URI,
-    "token_uri": process.env.FIREBASE_TOKEN_URI,
-    "auth_provider_x509_cert_url": process.env.FIREBASE_AUTH_PROVIDER_X509_CERT_URL,
-    "client_x509_cert_url": process.env.FIREBASE_CLIENT_X509_CERT_URL,
-  }),
+  credential: admin.credential.cert(serviceAccount),
   databaseURL: 'https://projectpa-223310.firebaseio.com',
 });
 
+// admin.initializeApp({
+//   credential: admin.credential.cert({
+//     "type": process.env.FIREBASE_TYPE,
+//     "project_id": process.env.FIREBASE_PROJECT_ID,
+//     "private_key_id": process.env.FIREBASE_PRIVATE_KEY_ID,
+//     "private_key": process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n'),
+//     "client_email": process.env.FIREBASE_CLIENT_EMAIL,
+//     "client_id": process.env.FIREBASE_CLIENT_ID,
+//     "auth_uri": process.env.FIREBASE_AUTH_URI,
+//     "token_uri": process.env.FIREBASE_TOKEN_URI,
+//     "auth_provider_x509_cert_url": process.env.FIREBASE_AUTH_PROVIDER_X509_CERT_URL,
+//     "client_x509_cert_url": process.env.FIREBASE_CLIENT_X509_CERT_URL,
+//   }),
+//   databaseURL: 'https://projectpa-223310.firebaseio.com',
+// });
 
 exports.getEvents = (req, res) => {
-  // Get token from credentials - This makes events dynamic
-
   function eventsSet(events) {
     const db = admin.firestore();
     events.map((event) => {
@@ -38,7 +35,6 @@ exports.getEvents = (req, res) => {
         meeting_start: event.start.dateTime,
         meeting_end: event.end.dateTime,
         description: event.description || null,
-        // tokenID: ###
       };
       const setDoc = db.collection('tbl_events').doc(event.id).update(newData);
     });
@@ -127,9 +123,7 @@ exports.getEvents = (req, res) => {
       if (err) return console.log(`The API returned an error: ${err}`);
       const events = res.data.items;
       if (events.length) {
-
         eventsSet(events);
-
       } else {
         console.log('No upcoming events found.');
       }
