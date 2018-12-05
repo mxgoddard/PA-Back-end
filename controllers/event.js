@@ -32,3 +32,21 @@ exports.patchHandledEvent = (req, res) => {
     res.send({ msg: `${ handled } is an invalid query, please use either true / false` });
   }
 };
+
+exports.getHandledEvents = (req, res) => {
+  // const ref = db.ref('tbl_events');
+  const events = db.collection('tbl_events').where('handled', '==', 'true');
+  let handledEventIds = [];
+  let handledEvents = [];
+  const getEvents = events.get().then((docId) => {
+    docId.forEach((filtered) => handledEventIds.push(filtered.id));
+    handledEventIds.forEach((handledEventId) => {
+      let event = db.collection('tbl_trip').doc(handledEventId);
+
+      let getDoc = event.get().then(async (doc) => {
+        handledEvents.push(doc.data());
+        if (handledEvents.length === handledEventIds.length) res.send(handledEvents);
+      });
+    });
+  });
+};
