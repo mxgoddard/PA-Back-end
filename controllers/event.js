@@ -41,10 +41,12 @@ exports.getHandledEvents = (req, res) => {
   const getEvents = events.get().then((docId) => {
     docId.forEach((filtered) => handledEventIds.push(filtered.id));
     handledEventIds.forEach((handledEventId) => {
-      let event = db.collection('tbl_trip').doc(handledEventId);
+      let event = db.collection('tbl_events').doc(handledEventId);
 
       let getDoc = event.get().then(async (doc) => {
-        handledEvents.push(doc.data());
+        let newEvent = doc.data();
+        newEvent.id = handledEventId;
+        handledEvents.push(newEvent);
         if (handledEvents.length === handledEventIds.length) res.send(handledEvents);
       });
     });
