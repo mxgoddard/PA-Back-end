@@ -4,6 +4,7 @@ exports.homepage = (req, res) => {
     routes: ['/',
       'GET: /events',
       'GET: /events/:event_id',
+      'GET: /handledEvent/:event_id?handled=true',
       'GET: /direction/:event_id',
       'GET || POST: /user',
     ],
