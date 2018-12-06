@@ -30,7 +30,7 @@ exports.getDirectionById = (req, res) => {
       let toConvertTime = Date.parse(doc.data().meeting_start);
       const meeting_start = Number(String(toConvertTime).split('').slice(0, 10).join('')) - 18000;
       toConvertTime = Date.parse(doc.data().meeting_end);
-      const meeting_end = Number(String(toConvertTime).split('').slice(0, 10).join('')) - 18000;
+      const meeting_end = Number(String(toConvertTime).split('').slice(0, 10).join('')) - 16000;
       const BASE_URL = `https://maps.googleapis.com/maps/api/directions/json?origin=${origin}&destination=${loc}&mode=transit&arrival_time=${meeting_start}&key=${GOOGLE_KEY}`;
       const RETURN_URL = `https://maps.googleapis.com/maps/api/directions/json?origin=${loc}&destination=${origin}&mode=transit&departure_time=${meeting_end}&key=${GOOGLE_KEY}`;
       try {
@@ -84,7 +84,6 @@ function getDepartObject(event_id, doc, data, start) {
 
 // Need to make this DRY
 function getReturnObject(event_id, doc, data) {
-  console.log(data);
   const train_journey = data.routes[0].legs[0].steps.filter(travel => travel.travel_mode === 'TRANSIT');
 
   const { arrival_time, departure_time, distance, duration, end_address, start_address } = data.routes[0].legs[0];
