@@ -73,7 +73,7 @@ exports.getUnhandledEvents = (req, res) => {
       });
     });
     if (!handledEventIds.length) {
-      res.send({ msg: 'NO EVENTS' })
+      res.send([])
     }
   });
 };
