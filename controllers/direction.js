@@ -11,7 +11,7 @@ exports.getDirectionById = (req, res) => {
   const event = db.collection('tbl_events').doc(event_id);
   const getDoc = event.get().then(async (doc) => {
     let origin = 'Manchester,UK';
-    await db.collection('tbl_user').doc('user_id') // NEED TO CHANGE THIS FOR DYNAMIC
+    await db.collection('tbl_user').doc("user_id")
       .get().then((user) => {
         if (start === 'home') {
           origin = encodeURI(user.data().home_address);
@@ -27,7 +27,6 @@ exports.getDirectionById = (req, res) => {
       console.log('No such document!');
     } else {
       const loc = encodeURI(doc.data().location);
-      console.log(loc)
       let toConvertTime = Date.parse(doc.data().meeting_start);
       const meeting_start = Number(String(toConvertTime).split('').slice(0, 10).join('')) - 18000;
       toConvertTime = Date.parse(doc.data().meeting_end);
