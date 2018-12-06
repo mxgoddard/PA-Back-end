@@ -69,10 +69,11 @@ exports.getUnhandledEvents = (req, res) => {
         handledEvents.push(newEvent);
         if (handledEvents.length === handledEventIds.length) {
           res.send(handledEvents);
-        } else {
-          res.send({ msg: 'NO EVENTS' });
         }
       });
     });
+    if (!handledEventIds.length) {
+      res.send({ msg: 'NO EVENTS' })
+    }
   });
 };
