@@ -5,6 +5,7 @@ exports.homepage = (req, res) => {
       'GET: /events',
       'GET: /events/:event_id',
       'GET /handledEvents',
+      'GET /unhandledEvents',
       'PATCH: /handledEvent/:event_id?handled=true',
       'GET: /direction/:event_id',
       'GET || POST: /user',

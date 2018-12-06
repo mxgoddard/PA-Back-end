@@ -51,3 +51,24 @@ exports.getHandledEvents = (req, res) => {
     });
   });
 };
+
+
+exports.getUnhandledEvents = (req, res) => {
+  // const ref = db.ref('tbl_events');
+  const events = db.collection('tbl_events').where('handled', '==', 'false');
+  let handledEventIds = [];
+  let handledEvents = [];
+  const getEvents = events.get().then((docId) => {
+    docId.forEach((filtered) => handledEventIds.push(filtered.id));
+    handledEventIds.forEach((handledEventId) => {
+      let event = db.collection('tbl_events').doc(handledEventId);
+
+      let getDoc = event.get().then(async (doc) => {
+        let newEvent = doc.data();
+        newEvent.id = handledEventId;
+        handledEvents.push(newEvent);
+        if (handledEvents.length === handledEventIds.length) res.send(handledEvents);
+      });
+    });
+  });
+};

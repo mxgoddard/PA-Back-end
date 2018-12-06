@@ -89,6 +89,7 @@ For fast, easy development, instead of restarting our server manually, nodemon d
   "GET:   /events",
   "GET:   /events/:event_id",
   "GET    /handledEvents",
+  "GET    /unhandledEvents",
   "PATCH  /handledEvent/:event_id?handled=true", // handled can be set to true or false
   "GET    /direction/:event_id",
   "GET    /user",
