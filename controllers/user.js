@@ -21,7 +21,7 @@ exports.postUserInfo = (req, res) => {
       home_address: req.body.home_address,
       office_address: req.body.office_address,
     };
-    db.collection('tbl_user').doc(JSON.parse(token).access_token).set(newUserInfo);
+    db.collection('tbl_user').doc(JSON.parse(token).access_token).update(newUserInfo);
     res.send({ msg: 'Successfully posted user data', data: newUserInfo });
   });
 };

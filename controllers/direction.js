@@ -27,6 +27,7 @@ exports.getDirectionById = (req, res) => {
       console.log('No such document!');
     } else {
       const loc = encodeURI(doc.data().location);
+      console.log(loc)
       let toConvertTime = Date.parse(doc.data().meeting_start);
       const meeting_start = Number(String(toConvertTime).split('').slice(0, 10).join('')) - 18000;
       toConvertTime = Date.parse(doc.data().meeting_end);
