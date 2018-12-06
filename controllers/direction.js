@@ -10,8 +10,8 @@ exports.getDirectionById = (req, res) => {
 
   const event = db.collection('tbl_events').doc(event_id);
   const getDoc = event.get().then(async (doc) => {
-    let origin = 'Manchester,UK';
-    await db.collection('tbl_user').doc("user_id")
+    let origin = 'Manchester';
+    await db.collection('tbl_user').doc('user_id')
       .get().then((user) => {
         if (start === 'home') {
           origin = encodeURI(user.data().home_address);
@@ -31,8 +31,8 @@ exports.getDirectionById = (req, res) => {
       const meeting_start = Number(String(toConvertTime).split('').slice(0, 10).join('')) - 18000;
       toConvertTime = Date.parse(doc.data().meeting_end);
       const meeting_end = Number(String(toConvertTime).split('').slice(0, 10).join('')) - 16000;
-      const BASE_URL = `https://maps.googleapis.com/maps/api/directions/json?origin=${origin}&destination=${loc}&mode=transit&arrival_time=${meeting_start}&key=${GOOGLE_KEY}`;
-      const RETURN_URL = `https://maps.googleapis.com/maps/api/directions/json?origin=${loc}&destination=${origin}&mode=transit&departure_time=${meeting_end}&key=${GOOGLE_KEY}`;
+      const BASE_URL = `https://maps.googleapis.com/maps/api/directions/json?origin=${origin},UK&destination=${loc}&mode=transit&arrival_time=${meeting_start}&key=${GOOGLE_KEY}`;
+      const RETURN_URL = `https://maps.googleapis.com/maps/api/directions/json?origin=${loc},UK&destination=${origin}&mode=transit&departure_time=${meeting_end}&key=${GOOGLE_KEY}`;
       try {
         getData(BASE_URL, RETURN_URL).then((data) => {
           const departObj = getDepartObject(event_id, doc, data[0], start);
